@@ -72,7 +72,14 @@ docker compose up -d --build
 | ADMIN_PASSWORD          | Пароль от аккаунта администратора                                                                 |
 | S3_TOKEN                | Токен для загрузки аудиозаписей в S3. Может быть произвольной строкой                                                                                                  |
 
-
+## Авторы
+[<img src="https://github.com/polestvr.png" width="60px;"/>](https://github.com/polestvr)
+[<img src="https://github.com/cuttenEDU.png" width="60px;"/>](https://github.com/cuttenEDU)
+[<img src="https://github.com/RuslanZalikov.png" width="60px;"/>](https://github.com/RuslanZalikov)
+[<img src="https://github.com/Filadrif.png" width="60px;"/>](https://github.com/Filadrif)
+[<img src="https://github.com/petrosyyaann.png" width="60px;"/>](https://github.com/petrosyyaann)
+[<img src="https://github.com/littowl.png" width="60px;"/>](https://github.com/littowl)
+[<img src="https://github.com/pndsdn.png" width="60px;"/>](https://github.com/pndsdn)
 
 
 
