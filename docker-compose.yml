@@ -2,7 +2,7 @@ version: "3.6"
 services:
   restapi:
     image: labelspeech_backend
-    build: /backend/.
+    build: backend/.
     restart: always
     depends_on:
       - db
