@@ -1,78 +1,78 @@
 # LabelSpeech
 
-Система для многопользовательской разметки аудио с речью.
+A system for multi-user markup of audio with speech.
 
 ![LabelSpeech](img/labelspeech.jpg)
 
-## Функционал
+## Functionality
 
-- Удобный интерфейс разметки с управлением горячими клавишами
-- Сбор статистики о выполненных пользователями заданиях разметки
-- Механизм дополнительной верификации транскрипций 
-- Настройка распределения типов заданий среди пользователей
-- Темная тема 😎
+- User-friendly markup interface with hotkey control
+- Collection of statistics about markup tasks performed by users
+- Mechanism of additional verification of transcriptions 
+- Customization of assignment types distribution among users
+- Dark theme 😎
 
-## Установка, конфигурация и использование
+## Installation, configuration and use
 
-Система разворачивается при помощи docker (в нашем случае использовалась версия 23.0.5 и docker compose версии 2.17.3) в виде 4 контейнеров:
-- СУБД PostgreSQL  - хранит информацию о разметке и пользователях
-- REST API для взаимодействия с базой данных
-- S3 хранилище Minio - хранит аудиофайлы (возможна конфигурация с использованием стороннего хранилища)
-- Nginx сервер, доставляющий веб-интерфейс
+The system is deployed using docker (in our case we used version 23.0.5 and docker compose version 2.17.3) as 4 containers:
+- PostgreSQL DBMS - stores information about markup and users
+- REST API for interacting with the database
+- S3 storage Minio - stores audio files (configuration using third-party storage is possible)
+- Nginx server delivering web interface
 
-### Установка и запуск
+### Installation and startup
 
-1. Клонируем репозиторий
+1. Clone the repository
 ```
 git clone https://github.com/mtuciru/LabelSpeech.git && cd LabelSpeech
 ```
 
-2. Копируем .env.example и переименовываем его копию в .env файл. В данном файле находятся переменные окружения, предназначенные для конфигурации работы системы. В таблице ниже расположено описание каждой из переменных. Обязательными для самостоятельной конфигурации при развертывании в production-окружении являются:
-	- JWT токен
-	- Данные S3 хранилища 
-	- Учетные данные аккаунта администратора
-	- S3 токен загрузки
+2. Copy .env.example and rename the copy to an .env file. This file contains environment variables that are used to configure system operation. The table below contains a description of each of the variables. The following variables are mandatory for self-configuration when deploying in a production environment:
+	- JWT token
+	- S3 storage data 
+	- Administrator account credentials
+	- S3 download token
 
-3. Поднимаем компоуз:
+3. Up the compose:
 ```
 docker compose up -d --build
 ```
 
-После первого запуска в системе будет создан аккаунт администратора с учетными данными из настроек окружения. При помощи него можно назначать права администратора другим пользователям.
+After the first startup, an administrator account will be created in the system with credentials from the environment settings. This account can be used to assign administrator rights to other users.
 
-### Добавление аудиозаписей на разметку
+### Adding audio recordings to markup
 
-Добавление записей с речью для разметки осуществляется через HTTP-запрос к REST API приложению (доступному по порту 8000) по пути /api/file/upload. Данный запрос в качестве параметров требует токен для авторизации загрузки (который устанавливается в .env файле), аудиофайл в формате MP3 и оригинальную транскрибацию речи данного файла (может быть пустой строкой). После выполнения запроса аудиофайл загружается в S3-хранилище, а его метаинформация добавляется в базу данных.
+Adding recordings with speech for markup is done via an HTTP request to the REST API application (accessible on port 8000) at the path /api/file/upload. This request requires as parameters an upload authorization token (which is set in the .env file), an audio file in MP3 format, and the original speech transcription of this file (can be an empty string). Once the request is executed, the audio file is uploaded to S3 storage and its meta-information is added to the database.
 
-Более подробную спецификацию метода можно посмотреть в Swagger документации по адресу http://<адрес_сервера>:8000/docs (например если сервер доступен по адресу 192.168.1.5 то документация доступна по адресу http://192.168.1.5:8000/docs)
+More detailed method specification can be found in Swagger documentation at http://<server_address>:8000/docs (e.g. if the server is available at 192.168.1.5, the documentation is available at http://192.168.1.5:8000/docs).
 
-### Переменные окружения
+### Environment Variables
 
-| Переменная              | Описание                                                                                          |
-| ----------------------- | ------------------------------------------------------------------------------------------------- |
-| JWT_SECRET              | JSON WEB Token для авторизации в приложении                                                       |
-| JWT_ACCESS_EXPIRE       | Срок действия access токена в минутах                                                             |
-| JWT_REFRESH_EXPIRE      | Срок действия refresh токена в часах                                                              |
-| JWT_REFRESH_LONG_EXPIRE | Срок действия продленного refresh токена в часах                                                  |
-| SERVER_ADDR             | Адрес, на котором будет разворачиваться бэкэнд приложение внутри контейнера                       |
-| SERVER_PORT             | Порт, на котором будет разворачиваться бэкэнд приложение внутри контейнера                        |
-| SERVER_TEST             | Режим работы uvicorn. Для dev сервера следует использовать - true, для production сервера - false |
-| DB_ADDR                 | Hostname базы данных                                                                              |
-| DB_PORT                 | Порт, на котором будет разворачиваться база данных                                                |
-| DB_USERNAME             | Имя пользователя для работы с базой данных                                                        |
-| DB_PASSWORD             | Пароль пользователя для работы с базой данных                                                     |
-| DB_NAME                 | Название базы данных                                                                              |
-| AWS_ACCESS_KEY_ID       | Идентификатор статического ключа, созданного при подготовке к работе c S3                         |
-| AWS_SECRET_ACCESS_KEY   | Пароль для доступа к S3                                                                           |
-| AWS_REGION              | Регион размещения инфраструктуры AWS                                                              |
-| AWS_HOST                | URL S3 хранилища                                                                                  |
-| AWS_BUCKET              | Название aws bucket для вашего S3                                                                 |
-| MAX_USERS_WITH_FRAGMENT | Максимальное количество пользователей, которым может быть выдан один фрагмент для разметки        |
-| ADMIN_USERNAME          | Логин от аккаунта базового администратора, который создается при первом запуске приложения        |
-| ADMIN_PASSWORD          | Пароль от аккаунта администратора                                                                 |
-| S3_TOKEN                | Токен для загрузки аудиозаписей в S3. Может быть произвольной строкой                                                                                                  |
+| Variable | Description                                                                                                                            |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| JWT_SECRET              | JSON WEB Token for application authorization                                                                            |
+| JWT_ACCESS_EXPIRE       | Access token expiration time in minutes                                                                                 |
+| JWT_REFRESH_EXPIRE      | Refresh token validity in hours                                                                                         |
+| JWT_REFRESH_LONG_EXPIRE | Extended refresh token validity in hours                                                                                |
+| SERVER_ADDR             | The address where the backend application will be deployed within the container                                         |
+| SERVER_PORT             | The port on which the backend application will be deployed within the container                                         |
+| SERVER_TEST             | Mode of uvicorn operation. For dev server should be used - true, for production server - false                          |
+| DB_ADDR                 | Database Hostname                                                                                                       |
+| DB_PORT                 | Port on which the database will be deployed                                                                             |
+| DB_USERNAME             |  User name for working with the database                                                                                |
+| DB_PASSWORD             | User password for working with the database                                                                             |
+| DB_NAME                 |  Database name                                                                                                          |
+| AWS_ACCESS_KEY_ID       | Identifier of the static key created in preparation for work with S3                                                    |
+| AWS_SECRET_ACCESS_KEY   | Password to access S3                                                                                                   |
+| AWS_REGION              | AWS infrastructure deployment region                                                                                    |
+| AWS_HOST                | URL S3                                                                                                                  |
+| AWS_BUCKET              | The name of the aws bucket for your S3                                                                                  |
+| MAX_USERS_WITH_FRAGMENT | Maximum number of users to whom one fragment can be issued for markup                             		            |
+| ADMIN_USERNAME          | Login from the basic administrator account, which is created when the application is launched for the first time        |
+| ADMIN_PASSWORD          | Password for the administrator account                                                                                  |
+| S3_TOKEN                | Token for uploading audio recordings to S3. Can be an arbitrary string                                                  |
 
-## Авторы
+## Authors
 [<img src="https://github.com/polestvr.png" width="60px;"/>](https://github.com/polestvr)
 [<img src="https://github.com/cuttenEDU.png" width="60px;"/>](https://github.com/cuttenEDU)
 [<img src="https://github.com/RuslanZalikov.png" width="60px;"/>](https://github.com/RuslanZalikov)
