@@ -1,5 +1,5 @@
 import enum
-from sqlalchemy import ForeignKey, TIMESTAMP, Enum
+from sqlalchemy import ForeignKey, Enum
 from sqlalchemy.orm import Mapped, mapped_column
 from models.base import Base
 
@@ -17,4 +17,8 @@ class UserPermissions(Base):
     transcribate: Mapped[str] = mapped_column(Enum(PermissionLevel), nullable=False,
                                               default=PermissionLevel.admin_block)
     validate: Mapped[str] = mapped_column(Enum(PermissionLevel), nullable=False,
+                                          default=PermissionLevel.admin_block)
+    label: Mapped[str] = mapped_column(Enum(PermissionLevel), nullable=False,
+                                       default=PermissionLevel.admin_block)
+    classify: Mapped[str] = mapped_column(Enum(PermissionLevel), nullable=False,
                                           default=PermissionLevel.admin_block)

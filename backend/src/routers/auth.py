@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, Request, Response, Body, Cookie
 
 import errors
 from auth import init_user_tokens, get_user_session, refresh_user_tokens
-from models import user as usr
-from models import settings as user_settings
+from models.user import User, UserStatistics
+from models.settings import UserPermissions, PermissionLevel
 
 from db import get_database, Session
 from schemas.auth import UserCredentials, Refresh, SignUp
@@ -20,7 +20,7 @@ async def login_user(
         credentials: UserCredentials,
         db: Session = Depends(get_database)
 ):
-    user = db.query(usr.User).filter_by(username=credentials.login).first()
+    user = db.query(User).filter_by(username=credentials.login).first()
     if user is None:
         raise errors.invalid_credentials()
     if not user.verify_password(credentials.password):
@@ -62,10 +62,10 @@ async def signup_user(user: SignUp, db: Session = Depends(get_database)):
     if user.student and not user.student_group:
         raise errors.user_create_error("Student group is mandatory if student == true!")
 
-    if db.query(usr.User).filter_by(username=user.username).first():
+    if db.query(User).filter_by(username=user.username).first():
         raise errors.user_create_error("User with such username already exits!")
 
-    new_user = usr.User(
+    new_user = User(
             username=user.username,
             password=user.password,
             fullname=user.fullname,
@@ -74,12 +74,15 @@ async def signup_user(user: SignUp, db: Session = Depends(get_database)):
         )
     db.add(new_user)
     db.commit()
-    db.add(user_settings.UserPermissions(
+
+    db.add(UserPermissions(
         id=new_user.id,
-        transcribate=user_settings.PermissionLevel.admin_allow,
-        validate=user_settings.PermissionLevel.admin_allow
+        transcribate=PermissionLevel.admin_allow,
+        validate=PermissionLevel.admin_allow,
+        label=PermissionLevel.admin_allow,
+        classify=PermissionLevel.admin_allow
     ))
-    db.add(usr.UserStatistics(
+    db.add(UserStatistics(
         user_id=new_user.id
     ))
     db.commit()

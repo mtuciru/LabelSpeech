@@ -1,15 +1,17 @@
 from pydantic import BaseModel
 from datetime import datetime
-from typing import Optional
-from enum import Enum
+from typing import Optional, List
+from enum import StrEnum
 
 
-class TaskType(Enum):
-    transcibate = "transcibate"
+class TaskType(StrEnum):
+    transcribate = "transcribate"
     verify = "verify"
+    label = "label"
+    classify = "classify"
 
 
-class AudioFragment(BaseModel):
+class AudioFragmentGet(BaseModel):
     s3_path: str
     trb: str
     transcribation_id: int
@@ -17,8 +19,8 @@ class AudioFragment(BaseModel):
 
 class FragmentTask(BaseModel):
     s3_path: str
-    trb: str
-    transcribation_id: int
+    additional_params: dict
+    task_id: int
     task_type: str
 
 
@@ -41,6 +43,14 @@ class TranscribationCreate(BaseModel):
     trb: str
 
 
+class ClassifyingCreate(BaseModel):
+    label: Optional[str]
+
+
+class LabelingCreate(BaseModel):
+    label: List[dict]
+
+
 class StatisticsAll(BaseModel):
     fullname: str
     student: bool
@@ -59,6 +69,8 @@ class StatisticsRole(BaseModel):
     transcribations_created: int
     transcribations_validated: int
     transcribations_correct: float
+    audio_labeled: int
+    audio_classified: int
 
 
 class StatisticsAllFilter(BaseModel):

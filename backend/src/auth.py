@@ -26,6 +26,7 @@ def set_cookie(access: str, response: Response, max_age: int):
 def get_user_agent_info(request: Request):
     ip = request.client[0]
     user_agent = request.headers.get("user-agent")
+    # TODO: Rewrite select only client IP from headers
     if "X-Forwarded-For" in request.headers:
         info = [request.headers["X-Forwarded-For"]]
     elif "Forwarded" in request.headers:
