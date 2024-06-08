@@ -68,7 +68,7 @@ More detailed method specification can be found in Swagger documentation at http
 | AWS_HOST                | URL S3                                                                                                                  |
 | AWS_BUCKET              | The name of the aws bucket for your S3                                                                                  |
 | MAX_USERS_WITH_FRAGMENT | Maximum number of users to whom one fragment can be issued for markup                             		            |
-| ADMIN_USERNAME          | Login from the basic administrator account, which is created when the application is launched for the first time        |
+| ADMIN_EMAIL          | Login from the basic administrator account, which is created when the application is launched for the first time        |
 | ADMIN_PASSWORD          | Password for the administrator account                                                                                  |
 | S3_TOKEN                | Token for uploading audio recordings to S3. Can be an arbitrary string                                                  |
 

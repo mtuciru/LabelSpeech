@@ -30,7 +30,7 @@ async def create_project(params: ProjectCreate = Body(), user=Depends(get_admin)
 async def update_project(project_id: int, params: ProjectUpdate = Body(),
                          user=Depends(get_admin), db: Session = Depends(get_database)):
     """Обновление параметров проекта"""
-    project = db.query(Project).options(load_only(Project.id)).filter_by(project_id=project_id).first()
+    project = db.query(Project).options(load_only(Project.id)).filter_by(id=project_id).first()
     if project is None:
         raise errors.project_not_found()
 
@@ -140,9 +140,9 @@ async def remove_users_from_projects(params: UsersInProject, user=Depends(get_ad
             responses=errors.with_errors(errors.project_not_found()))
 async def get_users_in_project(project_id: int, user=Depends(get_admin), db: Session = Depends(get_database)):
     """Получение всех пользователей в проекте"""
-    project = db.query(Project).options(load_only(Project.id)).filter_by(project_id=project_id).first()
+    project = db.query(Project).options(load_only(Project.id)).filter_by(id=project_id).first()
     if project is None:
         raise errors.project_not_found()
 
     users_in_project = db.query(ProjectUsers).filter_by(project_id=project_id).all()
-    return [user.id for user in users_in_project] if users_in_project is not None else []
+    return [user.user_id for user in users_in_project] if users_in_project is not None else []
