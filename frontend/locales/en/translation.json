@@ -105,6 +105,7 @@
     "Проекты": "Projects",
     "Проект": "Project",
     "Создать проект": "Create project",
+    "Редактировать проект": "Edit project",
     "Описание": "Description",
     "Владелец": "Owner",
     "Дата создания": "Created at",
@@ -138,5 +139,7 @@
     "СЕГМЕНТАЦИИ": "SEGMENTATION",
     "выбирайте Не подходит, если в аудиозаписи несколько классов или нет ни одного из предложенных.": "select \"Not suitable\" if there are several classes in the audio recording or if there are none of the proposed ones.",
     "выберите класс и щелкните два раза по аудиодорожке. Потяните за край блока, если хотите отредактировать сегмент.": "select a class and double-click on the audio track. Drag the edge of the block if you want to edit the segment.",
-    "Вы действительно хотите удалить проект?": "Do you really want to delete project?"
+    "Вы действительно хотите удалить проект?": "Do you really want to delete project?",
+    "Все верно": "All right",
+    "Есть ошибки": "There are mistakes"
 }
