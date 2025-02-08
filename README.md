@@ -82,6 +82,6 @@ More detailed method specification can be found in Swagger documentation at http
 [<img src="https://github.com/pndsdn.png" width="60px;"/>](https://github.com/pndsdn)
 
 
-
+If you use this software in your research, please cite it using the BibTeX entry from [file](https://github.com/mtuciru/LabelSpeech/blob/main/references.bib)
 
 
