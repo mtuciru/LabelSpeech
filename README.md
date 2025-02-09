@@ -73,8 +73,8 @@ More detailed method specification can be found in Swagger documentation at http
 | S3_TOKEN                | Token for uploading audio recordings to S3. Can be an arbitrary string                                                  |
 
 ## Authors
-[<img src="https://github.com/polestvr.png" width="60px;"/>](https://github.com/polestvr)
 [<img src="https://github.com/cuttenEDU.png" width="60px;"/>](https://github.com/cuttenEDU)
+[<img src="https://github.com/polestvr.png" width="60px;"/>](https://github.com/polestvr)
 [<img src="https://github.com/RuslanZalikov.png" width="60px;"/>](https://github.com/RuslanZalikov)
 [<img src="https://github.com/Filadrif.png" width="60px;"/>](https://github.com/Filadrif)
 [<img src="https://github.com/petrosyyaann.png" width="60px;"/>](https://github.com/petrosyyaann)
